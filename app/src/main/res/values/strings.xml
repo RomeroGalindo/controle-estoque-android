@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">Controle de Estoque</string>
+
+    <!-- Navigation labels -->
+    <string name="nav_home">Produtos</string>
+    <string name="nav_movimentacoes">Movimentações</string>
+    <string name="nav_relatorios">Relatórios</string>
+    <string name="nav_configuracoes">Configurações</string>
+
+    <!-- Product fields -->
+    <string name="field_nome">Nome do Produto</string>
+    <string name="field_codigo_barras">Código de Barras (opcional)</string>
+    <string name="field_categoria">Categoria</string>
+    <string name="field_quantidade">Quantidade em Estoque</string>
+    <string name="field_unidade">Unidade</string>
+    <string name="field_data_validade">Data de Validade</string>
+    <string name="field_localizacao">Localização</string>
+    <string name="field_observacoes">Observações</string>
+    <string name="field_quantidade_minima">Quantidade Mínima</string>
+
+    <!-- Buttons -->
+    <string name="btn_salvar">Salvar</string>
+    <string name="btn_cancelar">Cancelar</string>
+    <string name="btn_excluir">Excluir</string>
+    <string name="btn_confirmar">Confirmar</string>
+
+    <!-- Notifications -->
+    <string name="notification_channel_name">Alertas de Validade</string>
+    <string name="notification_channel_desc">Notificações sobre produtos próximos do vencimento ou vencidos</string>
+    <string name="notification_expiring_title">Produto Próximo do Vencimento</string>
+    <string name="notification_expired_title">Produto Vencido</string>
+
+    <!-- Error messages -->
+    <string name="error_nome_obrigatorio">Nome do produto é obrigatório</string>
+    <string name="error_quantidade_invalida">Quantidade deve ser maior que zero</string>
+    <string name="error_data_obrigatoria">Data de validade é obrigatória</string>
+    <string name="error_estoque_insuficiente">Estoque insuficiente para esta saída</string>
+
+    <!-- Settings -->
+    <string name="setting_dias_antes_vencimento">Dias antes do vencimento para alertar</string>
+    <string name="setting_quantidade_minima_global">Quantidade mínima global para alerta</string>
+</resources>
