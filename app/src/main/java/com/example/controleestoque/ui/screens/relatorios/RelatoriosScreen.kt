@@ -37,7 +37,7 @@ fun RelatoriosScreen(
 
     // Produtos vencidos
     val agora = remember { DateUtils.inicioDeHoje() }
-    val limiteVencimento = remember(diasAntesVencimento) { DateUtils.agoraMailsDias(diasAntesVencimento) }
+    val limiteVencimento = remember(diasAntesVencimento) { DateUtils.agoraMaisDias(diasAntesVencimento) }
 
     val vencidos by produtoViewModel.observarVencidos(agora).collectAsState(initial = emptyList())
     val proximosVencer by produtoViewModel.observarProximosVencimento(limiteVencimento, agora).collectAsState(initial = emptyList())

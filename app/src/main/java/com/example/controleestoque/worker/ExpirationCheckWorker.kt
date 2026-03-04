@@ -49,7 +49,7 @@ class ExpirationCheckWorker @AssistedInject constructor(
         val agora = System.currentTimeMillis()
 
         // Timestamp limite: produtos com validade até (agora + diasAntesVencimento dias)
-        val limiteMs = DateUtils.agoraMailsDias(diasAntesVencimento)
+        val limiteMs = DateUtils.agoraMaisDias(diasAntesVencimento)
 
         // Busca produtos próximos do vencimento (incluindo os já vencidos)
         val proximosVencimento = produtoRepository.buscarProximosDoVencimento(limiteMs)

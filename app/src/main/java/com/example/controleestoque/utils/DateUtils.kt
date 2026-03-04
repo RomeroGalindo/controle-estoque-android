@@ -38,7 +38,7 @@ object DateUtils {
     }
 
     /** Retorna o timestamp correspondente a N dias a partir de agora */
-    fun agoraMailsDias(dias: Int): Long {
+    fun agoraMaisDias(dias: Int): Long {
         return System.currentTimeMillis() + TimeUnit.DAYS.toMillis(dias.toLong())
     }
 
