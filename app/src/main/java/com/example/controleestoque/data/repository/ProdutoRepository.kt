@@ -47,6 +47,9 @@ class ProdutoRepository @Inject constructor(
     suspend fun atualizarQuantidade(id: Long, novaQuantidade: Int) =
         produtoDao.atualizarQuantidade(id, novaQuantidade)
 
+    suspend fun atualizarDetalhesMovimentacao(id: Long, unidade: String, dataValidade: Long, localizacao: String) =
+        produtoDao.atualizarDetalhesMovimentacao(id, unidade, dataValidade, localizacao)
+
     /**
      * Busca produtos próximos do vencimento para uso no worker de notificações.
      * [limiteMs] é o timestamp máximo de validade a considerar.

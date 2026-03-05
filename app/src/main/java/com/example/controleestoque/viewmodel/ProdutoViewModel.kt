@@ -83,8 +83,8 @@ class ProdutoViewModel @Inject constructor(
                 when (filtro) {
                     FiltroProduto.TODOS -> true
                     FiltroProduto.PROXIMOS_VENCIMENTO ->
-                        DateUtils.estaProximoDoVencimento(p.dataValidade, dias)
-                    FiltroProduto.VENCIDOS -> DateUtils.estaVencido(p.dataValidade)
+                        p.dataValidade != 0L && DateUtils.estaProximoDoVencimento(p.dataValidade, dias)
+                    FiltroProduto.VENCIDOS -> p.dataValidade != 0L && DateUtils.estaVencido(p.dataValidade)
                     FiltroProduto.ESTOQUE_BAIXO -> {
                         val min = if (p.quantidadeMinima > 0) p.quantidadeMinima else qtdMin
                         p.quantidadeAtual <= min
@@ -113,10 +113,6 @@ class ProdutoViewModel @Inject constructor(
     fun salvarProduto(produto: Produto) {
         if (produto.nome.isBlank()) {
             _mensagem.value = "Nome do produto é obrigatório"
-            return
-        }
-        if (produto.dataValidade == 0L) {
-            _mensagem.value = "Data de validade é obrigatória"
             return
         }
         viewModelScope.launch {

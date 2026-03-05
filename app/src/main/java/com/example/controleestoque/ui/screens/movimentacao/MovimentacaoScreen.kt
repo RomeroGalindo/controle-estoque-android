@@ -25,6 +25,7 @@ import java.util.Locale
 /**
  * Tela de movimentações de estoque.
  * Permite registrar entradas e saídas e exibe o histórico completo.
+ * Inclui campos de quantidade, unidade, data de validade e localização.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -37,6 +38,9 @@ fun MovimentacaoScreen(
     val produtoSelecionadoId by viewModel.produtoSelecionadoId.collectAsState()
     val tipoMovimentacao by viewModel.tipoMovimentacao.collectAsState()
     val quantidade by viewModel.quantidade.collectAsState()
+    val unidade by viewModel.unidade.collectAsState()
+    val dataValidadeMs by viewModel.dataValidadeMs.collectAsState()
+    val localizacao by viewModel.localizacao.collectAsState()
     val observacoes by viewModel.observacoes.collectAsState()
     val carregando by viewModel.carregando.collectAsState()
     val mensagem by viewModel.mensagem.collectAsState()
@@ -51,6 +55,14 @@ fun MovimentacaoScreen(
 
     var showForm by remember { mutableStateOf(false) }
     var produtoDropdownExpanded by remember { mutableStateOf(false) }
+
+    // Unidade dropdown
+    val unidades = listOf("unidade", "caixa", "kg", "g", "litro", "ml", "pacote", "dúzia", "par")
+    var unidadeExpanded by remember { mutableStateOf(false) }
+
+    // DatePicker
+    var showDatePicker by remember { mutableStateOf(false) }
+    val dataValidadeStr = if (dataValidadeMs != 0L) DateUtils.formatarData(dataValidadeMs) else ""
 
     val produtoSelecionado = produtos.find { it.id == produtoSelecionadoId }
 
@@ -151,14 +163,71 @@ fun MovimentacaoScreen(
                             }
                         }
 
-                        // Quantidade
-                        OutlinedTextField(
-                            value = quantidade,
-                            onValueChange = viewModel::setQuantidade,
-                            label = { Text("Quantidade") },
+                        // Quantidade e Unidade em linha
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            OutlinedTextField(
+                                value = quantidade,
+                                onValueChange = viewModel::setQuantidade,
+                                label = { Text("Quantidade") },
+                                modifier = Modifier.weight(1f),
+                                singleLine = true,
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+
+                            // Dropdown de unidade
+                            ExposedDropdownMenuBox(
+                                expanded = unidadeExpanded,
+                                onExpandedChange = { unidadeExpanded = !unidadeExpanded },
+                                modifier = Modifier.weight(1f)
+                            ) {
+                                OutlinedTextField(
+                                    value = unidade,
+                                    onValueChange = {},
+                                    label = { Text("Unidade") },
+                                    readOnly = true,
+                                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(unidadeExpanded) },
+                                    modifier = Modifier.menuAnchor(),
+                                    singleLine = true
+                                )
+                                ExposedDropdownMenu(
+                                    expanded = unidadeExpanded,
+                                    onDismissRequest = { unidadeExpanded = false }
+                                ) {
+                                    unidades.forEach { u ->
+                                        DropdownMenuItem(
+                                            text = { Text(u) },
+                                            onClick = { viewModel.setUnidade(u); unidadeExpanded = false }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        // Data de validade
+                        OutlinedTextField(
+                            value = dataValidadeStr,
+                            onValueChange = {},
+                            label = { Text("Data de Validade") },
+                            modifier = Modifier.fillMaxWidth(),
+                            readOnly = true,
+                            trailingIcon = {
+                                IconButton(onClick = { showDatePicker = true }) {
+                                    Icon(Icons.Default.CalendarToday, contentDescription = "Selecionar data")
+                                }
+                            }
+                        )
+
+                        // Localização
+                        OutlinedTextField(
+                            value = localizacao,
+                            onValueChange = viewModel::setLocalizacao,
+                            label = { Text("Localização") },
+                            placeholder = { Text("Ex.: Prateleira 1, Depósito, Geladeira") },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
                         )
 
                         // Observações
@@ -220,6 +289,29 @@ fun MovimentacaoScreen(
                     }
                 }
             }
+        }
+    }
+
+    // DatePicker Dialog
+    if (showDatePicker) {
+        val datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = if (dataValidadeMs != 0L) dataValidadeMs else null
+        )
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let { ms ->
+                        viewModel.setDataValidadeMs(ms)
+                    }
+                    showDatePicker = false
+                }) { Text("OK") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDatePicker = false }) { Text("Cancelar") }
+            }
+        ) {
+            DatePicker(state = datePickerState)
         }
     }
 }

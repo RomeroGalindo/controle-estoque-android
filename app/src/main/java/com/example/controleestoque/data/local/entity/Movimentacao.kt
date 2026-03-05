@@ -44,6 +44,15 @@ data class Movimentacao(
     /** Quantidade movimentada */
     val quantidade: Int,
 
+    /** Unidade de medida (ex.: unidade, caixa, kg, litro) */
+    val unidade: String = "unidade",
+
+    /** Data de validade em milissegundos desde epoch (0 = não informada) */
+    val dataValidade: Long = 0L,
+
+    /** Localização física do produto (ex.: prateleira 1, depósito, geladeira) */
+    val localizacao: String = "",
+
     /** Data e hora da movimentação em milissegundos desde epoch */
     val dataHora: Long = System.currentTimeMillis(),
 
