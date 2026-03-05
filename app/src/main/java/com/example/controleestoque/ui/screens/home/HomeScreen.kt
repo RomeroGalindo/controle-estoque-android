@@ -186,6 +186,12 @@ fun HomeScreen(
                 )
                 NavigationBarItem(
                     selected = false,
+                    onClick = onNovoProduto,
+                    icon = { Icon(Icons.Default.AddCircle, contentDescription = "Cadastrar novo produto") },
+                    label = { Text("Cadastro") }
+                )
+                NavigationBarItem(
+                    selected = false,
                     onClick = onMovimentacoes,
                     icon = { Icon(Icons.Default.SwapHoriz, contentDescription = null) },
                     label = { Text("Movimentações") }
