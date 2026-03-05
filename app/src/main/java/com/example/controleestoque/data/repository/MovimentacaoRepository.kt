@@ -56,6 +56,15 @@ class MovimentacaoRepository @Inject constructor(
 
         val id = movimentacaoDao.inserir(movimentacao)
         produtoDao.atualizarQuantidade(produto.id, novaQuantidade)
+
+        // Atualiza detalhes do produto com dados da movimentação (quando informados)
+        produtoDao.atualizarDetalhesMovimentacao(
+            id = produto.id,
+            unidade = movimentacao.unidade,
+            dataValidade = if (movimentacao.dataValidade != 0L) movimentacao.dataValidade else produto.dataValidade,
+            localizacao = movimentacao.localizacao.ifBlank { produto.localizacao }
+        )
+
         return Result.success(id)
     }
 

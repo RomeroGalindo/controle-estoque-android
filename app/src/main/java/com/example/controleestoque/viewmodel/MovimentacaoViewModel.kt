@@ -34,6 +34,18 @@ class MovimentacaoViewModel @Inject constructor(
     private val _quantidade = MutableStateFlow("")
     val quantidade: StateFlow<String> = _quantidade.asStateFlow()
 
+    // Unidade de medida da movimentação
+    private val _unidade = MutableStateFlow("unidade")
+    val unidade: StateFlow<String> = _unidade.asStateFlow()
+
+    // Data de validade da movimentação (milissegundos, 0 = não informada)
+    private val _dataValidadeMs = MutableStateFlow(0L)
+    val dataValidadeMs: StateFlow<Long> = _dataValidadeMs.asStateFlow()
+
+    // Localização física
+    private val _localizacao = MutableStateFlow("")
+    val localizacao: StateFlow<String> = _localizacao.asStateFlow()
+
     // Observações da movimentação
     private val _observacoes = MutableStateFlow("")
     val observacoes: StateFlow<String> = _observacoes.asStateFlow()
@@ -57,6 +69,9 @@ class MovimentacaoViewModel @Inject constructor(
     fun setProdutoSelecionado(id: Long?) { _produtoSelecionadoId.value = id }
     fun setTipoMovimentacao(tipo: TipoMovimentacao) { _tipoMovimentacao.value = tipo }
     fun setQuantidade(qty: String) { _quantidade.value = qty }
+    fun setUnidade(unidade: String) { _unidade.value = unidade }
+    fun setDataValidadeMs(ms: Long) { _dataValidadeMs.value = ms }
+    fun setLocalizacao(loc: String) { _localizacao.value = loc }
     fun setObservacoes(obs: String) { _observacoes.value = obs }
     fun limparMensagem() { _mensagem.value = null }
 
@@ -86,6 +101,9 @@ class MovimentacaoViewModel @Inject constructor(
                 produtoId = produtoId,
                 tipo = _tipoMovimentacao.value,
                 quantidade = qtd,
+                unidade = _unidade.value,
+                dataValidade = _dataValidadeMs.value,
+                localizacao = _localizacao.value,
                 dataHora = System.currentTimeMillis(),
                 observacoes = _observacoes.value
             )
@@ -95,6 +113,9 @@ class MovimentacaoViewModel @Inject constructor(
                     _mensagem.value = "Movimentação registrada com sucesso"
                     // Limpa o formulário após sucesso
                     _quantidade.value = ""
+                    _unidade.value = "unidade"
+                    _dataValidadeMs.value = 0L
+                    _localizacao.value = ""
                     _observacoes.value = ""
                 },
                 onFailure = { e ->

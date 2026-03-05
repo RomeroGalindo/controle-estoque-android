@@ -34,8 +34,8 @@ fun ProdutoCard(
     onDeletar: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val vencido = DateUtils.estaVencido(produto.dataValidade)
-    val proximoVencer = DateUtils.estaProximoDoVencimento(produto.dataValidade, diasAntesVencimento)
+    val vencido = produto.dataValidade != 0L && DateUtils.estaVencido(produto.dataValidade)
+    val proximoVencer = produto.dataValidade != 0L && DateUtils.estaProximoDoVencimento(produto.dataValidade, diasAntesVencimento)
     val qtdMin = if (produto.quantidadeMinima > 0) produto.quantidadeMinima else quantidadeMinimaGlobal
     val estoqueBaixo = produto.quantidadeAtual <= qtdMin
 
@@ -80,15 +80,17 @@ fun ProdutoCard(
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (estoqueBaixo) ColorEstoqueBaixo else MaterialTheme.colorScheme.onSurface
                 )
-                Text(
-                    text = "Validade: ${DateUtils.formatarData(produto.dataValidade)}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = when {
-                        vencido -> ColorVencido
-                        proximoVencer -> ColorProximoVencer
-                        else -> MaterialTheme.colorScheme.onSurfaceVariant
-                    }
-                )
+                if (produto.dataValidade != 0L) {
+                    Text(
+                        text = "Validade: ${DateUtils.formatarData(produto.dataValidade)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = when {
+                            vencido -> ColorVencido
+                            proximoVencer -> ColorProximoVencer
+                            else -> MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                }
                 if (produto.categoria.isNotBlank()) {
                     Text(
                         text = produto.categoria,

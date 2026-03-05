@@ -216,10 +216,12 @@ private fun ProdutoRelatorioItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(produto.nome, fontWeight = FontWeight.Medium)
-                Text(
-                    "Validade: ${DateUtils.formatarData(produto.dataValidade)}",
-                    style = MaterialTheme.typography.bodySmall
-                )
+                if (produto.dataValidade != 0L) {
+                    Text(
+                        "Validade: ${DateUtils.formatarData(produto.dataValidade)}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             }
             Text(
                 "${produto.quantidadeAtual} ${produto.unidade}",

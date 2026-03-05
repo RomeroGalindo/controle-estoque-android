@@ -62,6 +62,7 @@ class ExpirationCheckWorker @AssistedInject constructor(
 
         // Envia notificação para produtos já vencidos
         for (produto in vencidos) {
+            if (produto.dataValidade == 0L) continue // Pula produtos sem data de validade
             val dataFormatada = DateUtils.formatarData(produto.dataValidade)
             sendNotification(
                 id = notificationId++,
@@ -73,6 +74,7 @@ class ExpirationCheckWorker @AssistedInject constructor(
         // Envia notificação para produtos próximos do vencimento (mas não vencidos)
         for (produto in proximosVencimento) {
             if (produto.id in idVencidos) continue // Já notificado como vencido
+            if (produto.dataValidade == 0L) continue // Pula produtos sem data de validade
             val diasRestantes = DateUtils.diasParaVencer(produto.dataValidade)
             val dataFormatada = DateUtils.formatarData(produto.dataValidade)
             sendNotification(

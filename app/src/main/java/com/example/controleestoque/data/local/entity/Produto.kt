@@ -27,8 +27,8 @@ data class Produto(
     /** Unidade de medida (ex.: unidade, caixa, kg, litro) */
     val unidade: String = "unidade",
 
-    /** Data de validade em milissegundos desde epoch (timestamp UTC) */
-    val dataValidade: Long,
+    /** Data de validade em milissegundos desde epoch (0 = não informada, atualizada por movimentações) */
+    val dataValidade: Long = 0L,
 
     /** Localização física do produto (ex.: prateleira 1, depósito, geladeira) */
     val localizacao: String = "",

@@ -75,6 +75,10 @@ interface ProdutoDao {
     @Query("UPDATE produtos SET quantidadeAtual = :novaQuantidade WHERE id = :id")
     suspend fun atualizarQuantidade(id: Long, novaQuantidade: Int)
 
+    /** Atualiza unidade, data de validade e localização de um produto (dados vindos de movimentação) */
+    @Query("UPDATE produtos SET unidade = :unidade, dataValidade = :dataValidade, localizacao = :localizacao WHERE id = :id")
+    suspend fun atualizarDetalhesMovimentacao(id: Long, unidade: String, dataValidade: Long, localizacao: String)
+
     /** Retorna todas as categorias distintas */
     @Query("SELECT DISTINCT categoria FROM produtos WHERE categoria != '' ORDER BY categoria ASC")
     fun listarCategorias(): Flow<List<String>>
